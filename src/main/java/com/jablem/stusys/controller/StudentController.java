@@ -6,13 +6,14 @@ import com.jablem.stusys.service.StudentService;
 import com.jablem.stusys.service.StudentServiceImpl;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-
+@WebServlet("/student")
 public class StudentController extends HttpServlet {
     private final StudentService service = new StudentServiceImpl();
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -51,8 +52,6 @@ public class StudentController extends HttpServlet {
         Student s = new Student(id, stuname, gender, pass, birthdate, age, address, phone);
 
         Student student = service.select(s);
-        resp.setCharacterEncoding("utf-8");
-        resp.setContentType("application/json;charset=utf-8");
 
         PrintWriter out = resp.getWriter();
         ObjectMapper om = new ObjectMapper();
@@ -91,8 +90,6 @@ public class StudentController extends HttpServlet {
 
         Student student = service.selectByNameAndPass(s);
         req.getSession().setAttribute("student", student);
-        resp.setCharacterEncoding("utf-8");
-        resp.setContentType("application/json;charset=utf-8");
 
         out.println(om.writeValueAsString(student));
         out.close();
@@ -152,8 +149,7 @@ public class StudentController extends HttpServlet {
         int i = service.addStudent(s);
         Student student = service.selectByNameAndPass(s);
         req.getSession().setAttribute("student", student);
-        resp.setCharacterEncoding("utf-8");
-        resp.setContentType("application/json;charset=utf-8");
+
 
         PrintWriter out = resp.getWriter();
         ObjectMapper om = new ObjectMapper();
@@ -167,8 +163,6 @@ public class StudentController extends HttpServlet {
 
     private void selectAll(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         List<Student> list = service.selectAll();
-        resp.setCharacterEncoding("utf-8");
-        resp.setContentType("application/json;charset=utf-8");
 
         PrintWriter out = resp.getWriter();
         ObjectMapper objectMapper = new ObjectMapper();
